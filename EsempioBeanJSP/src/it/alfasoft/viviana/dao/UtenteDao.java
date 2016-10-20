@@ -1,5 +1,16 @@
 package it.alfasoft.viviana.dao;
+import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 import it.alfasoft.viviana.bean.UtenteBean;
+
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -73,6 +84,43 @@ public class UtenteDao {
 			return u;
 
 		}
+		
+		
+		
+		//2-b R:Read tutti
+		public List<UtenteBean> getTuttiUtenti(){
+	
+			List<UtenteBean> lista = new ArrayList<UtenteBean>();
+			Session session=HibernateUtil.openSession();
+			Transaction tx=null;
+			try{
+				
+				tx=session.getTransaction();
+				tx.begin();
+
+
+				Query query = session
+						.createQuery("from UtenteBean");
+
+				lista=query.list();
+				
+
+				tx.commit();
+
+			} catch (Exception ex) {
+
+				tx.rollback();
+
+			} finally {
+				session.close();
+			}
+
+			return lista;
+
+		}
+		
+			
+			
 		
 		
 //		//4-Update
